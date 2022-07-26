@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./src/context"
 
 
 
@@ -28,7 +28,14 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Mutation: {};
   Query: {};
+  Team: { // root type
+    description: string; // String!
+    done: boolean; // Boolean!
+    id: string; // String!
+    name: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -42,18 +49,62 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    deleteTeam: NexusGenRootTypes['Team'] | null; // Team
+    postTeam: NexusGenRootTypes['Team']; // Team!
+    updateTeam: NexusGenRootTypes['Team'] | null; // Team
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    team: NexusGenRootTypes['Team'] | null; // Team
+    teams: NexusGenRootTypes['Team'][]; // [Team!]!
+  }
+  Team: { // field return type
+    description: string; // String!
+    done: boolean; // Boolean!
+    id: string; // String!
+    name: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Mutation: { // field return type name
+    deleteTeam: 'Team'
+    postTeam: 'Team'
+    updateTeam: 'Team'
+  }
   Query: { // field return type name
-    ok: 'Boolean'
+    team: 'Team'
+    teams: 'Team'
+  }
+  Team: { // field return type name
+    description: 'String'
+    done: 'Boolean'
+    id: 'String'
+    name: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    deleteTeam: { // args
+      id: string; // String!
+    }
+    postTeam: { // args
+      description: string; // String!
+      name: string; // String!
+    }
+    updateTeam: { // args
+      description?: string | null; // String
+      done?: boolean | null; // Boolean
+      id: string; // String!
+      name?: string | null; // String
+    }
+  }
+  Query: {
+    team: { // args
+      id: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -87,7 +138,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;
