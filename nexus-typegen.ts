@@ -28,14 +28,14 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Mutation: {};
-  Query: {};
-  Team: { // root type
+  Card: { // root type
     description: string; // String!
     done: boolean; // Boolean!
     id: string; // String!
     name: string; // String!
   }
+  Mutation: {};
+  Query: {};
 }
 
 export interface NexusGenInterfaces {
@@ -49,51 +49,51 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  Mutation: { // field return type
-    deleteTeam: NexusGenRootTypes['Team'] | null; // Team
-    postTeam: NexusGenRootTypes['Team']; // Team!
-    updateTeam: NexusGenRootTypes['Team'] | null; // Team
-  }
-  Query: { // field return type
-    team: NexusGenRootTypes['Team'] | null; // Team
-    teams: NexusGenRootTypes['Team'][]; // [Team!]!
-  }
-  Team: { // field return type
+  Card: { // field return type
     description: string; // String!
     done: boolean; // Boolean!
     id: string; // String!
     name: string; // String!
   }
+  Mutation: { // field return type
+    deleteCard: NexusGenRootTypes['Card'] | null; // Card
+    postCard: NexusGenRootTypes['Card']; // Card!
+    updateCard: NexusGenRootTypes['Card'] | null; // Card
+  }
+  Query: { // field return type
+    card: NexusGenRootTypes['Card'] | null; // Card
+    cards: NexusGenRootTypes['Card'][]; // [Card!]!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
-  Mutation: { // field return type name
-    deleteTeam: 'Team'
-    postTeam: 'Team'
-    updateTeam: 'Team'
-  }
-  Query: { // field return type name
-    team: 'Team'
-    teams: 'Team'
-  }
-  Team: { // field return type name
+  Card: { // field return type name
     description: 'String'
     done: 'Boolean'
     id: 'String'
     name: 'String'
   }
+  Mutation: { // field return type name
+    deleteCard: 'Card'
+    postCard: 'Card'
+    updateCard: 'Card'
+  }
+  Query: { // field return type name
+    card: 'Card'
+    cards: 'Card'
+  }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    deleteTeam: { // args
+    deleteCard: { // args
       id: string; // String!
     }
-    postTeam: { // args
+    postCard: { // args
       description: string; // String!
       name: string; // String!
     }
-    updateTeam: { // args
+    updateCard: { // args
       description?: string | null; // String
       done?: boolean | null; // Boolean
       id: string; // String!
@@ -101,7 +101,7 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    team: { // args
+    card: { // args
       id: string; // String!
     }
   }

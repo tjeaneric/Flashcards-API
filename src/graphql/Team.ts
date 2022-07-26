@@ -1,8 +1,8 @@
 import { extendType, nonNull, objectType, stringArg, booleanArg } from "nexus";
 
-// TYPE TEAM
-export const Team = objectType({
-  name: "Team",
+// TYPE CARD
+export const Card = objectType({
+  name: "Card",
   definition(t) {
     t.nonNull.string("id");
     t.nonNull.string("name");
@@ -11,37 +11,37 @@ export const Team = objectType({
   },
 });
 
-// TEAM QUERRIES
-export const teamQuery = objectType({
+// CARD QUERRIES
+export const cardQuery = objectType({
   name: "Query",
   definition(t) {
-    t.nonNull.list.nonNull.field("teams", {
-      type: "Team",
+    t.nonNull.list.nonNull.field("cards", {
+      type: "Card",
       resolve(parent, args, context) {
-        return context.prisma.team.findMany();
+        return context.prisma.card.findMany();
       },
     });
 
-    t.field("team", {
-      type: "Team",
+    t.field("card", {
+      type: "Card",
       args: { id: nonNull(stringArg()) },
       resolve(parent, args, context) {
-        const team = context.prisma.team.findUnique({
+        const card = context.prisma.card.findUnique({
           where: { id: args.id },
         });
 
-        return team;
+        return card;
       },
     });
   },
 });
 
-// TEAM MUTATIONS
-export const teamMutation = extendType({
+// CARD MUTATIONS
+export const CardMutation = extendType({
   type: "Mutation",
   definition(t) {
-    t.nonNull.field("postTeam", {
-      type: "Team",
+    t.nonNull.field("postCard", {
+      type: "Card",
       args: {
         name: nonNull(stringArg()),
         description: nonNull(stringArg()),
@@ -49,18 +49,18 @@ export const teamMutation = extendType({
       resolve(parent, args, context) {
         const { name, description } = args;
 
-        const newTeam = context.prisma.team.create({
+        const newCard = context.prisma.card.create({
           data: {
             name,
             description,
           },
         });
-        return newTeam;
+        return newCard;
       },
     });
 
-    t.field("updateTeam", {
-      type: "Team",
+    t.field("updateCard", {
+      type: "Card",
       args: {
         id: nonNull(stringArg()),
         name: stringArg(),
@@ -68,7 +68,7 @@ export const teamMutation = extendType({
         done: booleanArg(),
       },
       resolve(parent, args, context) {
-        const team = context.prisma.team.update({
+        const card = context.prisma.card.update({
           where: { id: args.id },
           //@ts-ignore
           data: {
@@ -76,19 +76,19 @@ export const teamMutation = extendType({
           },
         });
 
-        return team;
+        return card;
       },
     });
 
-    t.field("deleteTeam", {
-      type: "Team",
+    t.field("deleteCard", {
+      type: "Card",
       args: { id: nonNull(stringArg()) },
       resolve(parent, args, context) {
-        const team = context.prisma.team.delete({
+        const card = context.prisma.card.delete({
           where: { id: args.id },
         });
 
-        return team;
+        return card;
       },
     });
   },

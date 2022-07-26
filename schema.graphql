@@ -2,20 +2,20 @@
 ### Do not make changes to this file directly
 
 
-type Mutation {
-  deleteTeam(id: String!): Team
-  postTeam(description: String!, name: String!): Team!
-  updateTeam(description: String, done: Boolean, id: String!, name: String): Team
-}
-
-type Query {
-  team(id: String!): Team
-  teams: [Team!]!
-}
-
-type Team {
+type Card {
   description: String!
   done: Boolean!
   id: String!
   name: String!
+}
+
+type Mutation {
+  deleteCard(id: String!): Card
+  postCard(description: String!, name: String!): Card!
+  updateCard(description: String, done: Boolean, id: String!, name: String): Card
+}
+
+type Query {
+  card(id: String!): Card
+  cards: [Card!]!
 }
