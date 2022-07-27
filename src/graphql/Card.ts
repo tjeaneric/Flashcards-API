@@ -8,11 +8,23 @@ export const Card = objectType({
     t.nonNull.string("name");
     t.nonNull.string("description");
     t.nonNull.boolean("done");
+    t.nonNull.dateTime("createdAt");
+    t.field("createdBy", {
+      type: "User",
+      resolve(parent, args, context) {
+        const user = context.prisma.card
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .createdBy();
+        return user;
+      },
+    });
   },
 });
 
 // CARD QUERRIES
-export const cardQuery = objectType({
+export const CardQuery = objectType({
   name: "Query",
   definition(t) {
     t.nonNull.list.nonNull.field("cards", {
@@ -47,12 +59,23 @@ export const CardMutation = extendType({
         description: nonNull(stringArg()),
       },
       resolve(parent, args, context) {
-        const { name, description } = args;
+        //Checking if user is logged in
+        const { id } = context;
+
+        if (!id) {
+          throw new Error(
+            "You are not logged in!. Please log in to get access"
+          );
+        }
+
+        const name = args.name.toUpperCase();
+        const { description } = args;
 
         const newCard = context.prisma.card.create({
           data: {
             name,
             description,
+            createdBy: { connect: { id } },
           },
         });
         return newCard;
@@ -68,11 +91,21 @@ export const CardMutation = extendType({
         done: booleanArg(),
       },
       resolve(parent, args, context) {
+        //Checking if user is logged in
+        const { id } = context;
+
+        if (!id) {
+          throw new Error(
+            "You are not logged in!. Please log in to get access"
+          );
+        }
+
         const card = context.prisma.card.update({
           where: { id: args.id },
           //@ts-ignore
           data: {
             ...args,
+            name: args.name?.toUpperCase(),
           },
         });
 
@@ -84,6 +117,15 @@ export const CardMutation = extendType({
       type: "Card",
       args: { id: nonNull(stringArg()) },
       resolve(parent, args, context) {
+        //Checking if user is logged in
+        const { id } = context;
+
+        if (!id) {
+          throw new Error(
+            "You are not logged in!. Please log in to get access"
+          );
+        }
+
         const card = context.prisma.card.delete({
           where: { id: args.id },
         });

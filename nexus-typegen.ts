@@ -5,8 +5,23 @@
 
 
 import type { Context } from "./src/context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+  }
+}
 
 
 declare global {
@@ -25,10 +40,16 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Card: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     done: boolean; // Boolean!
     id: string; // String!
@@ -36,6 +57,12 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  User: { // root type
+    email: string; // String!
+    firstName: string; // String!
+    id: string; // String!
+    lastName: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -49,7 +76,13 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Card: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    createdBy: NexusGenRootTypes['User'] | null; // User
     description: string; // String!
     done: boolean; // Boolean!
     id: string; // String!
@@ -57,17 +90,32 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     deleteCard: NexusGenRootTypes['Card'] | null; // Card
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     postCard: NexusGenRootTypes['Card']; // Card!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateCard: NexusGenRootTypes['Card'] | null; // Card
   }
   Query: { // field return type
     card: NexusGenRootTypes['Card'] | null; // Card
     cards: NexusGenRootTypes['Card'][]; // [Card!]!
   }
+  User: { // field return type
+    cards: NexusGenRootTypes['Card'][]; // [Card!]!
+    email: string; // String!
+    firstName: string; // String!
+    id: string; // String!
+    lastName: string; // String!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Card: { // field return type name
+    createdAt: 'DateTime'
+    createdBy: 'User'
     description: 'String'
     done: 'Boolean'
     id: 'String'
@@ -75,12 +123,21 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     deleteCard: 'Card'
+    login: 'AuthPayload'
     postCard: 'Card'
+    signup: 'AuthPayload'
     updateCard: 'Card'
   }
   Query: { // field return type name
     card: 'Card'
     cards: 'Card'
+  }
+  User: { // field return type name
+    cards: 'Card'
+    email: 'String'
+    firstName: 'String'
+    id: 'String'
+    lastName: 'String'
   }
 }
 
@@ -89,9 +146,19 @@ export interface NexusGenArgTypes {
     deleteCard: { // args
       id: string; // String!
     }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
     postCard: { // args
       description: string; // String!
       name: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      firstName: string; // String!
+      lastName: string; // String!
+      password: string; // String!
     }
     updateCard: { // args
       description?: string | null; // String
