@@ -16,10 +16,22 @@ type Card {
   name: String!
 }
 
+input CardOrderByInput {
+  createdAt: Sort
+  description: Sort
+  name: Sort
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+type Feed {
+  cards: [Card!]!
+  count: Int!
+  id: ID
+}
 
 type Mutation {
   deleteCard(id: String!): Card
@@ -31,7 +43,12 @@ type Mutation {
 
 type Query {
   card(id: String!): Card
-  cards: [Card!]!
+  cards(filter: String, orderBy: [CardOrderByInput!], skip: Int, take: Int): Feed!
+}
+
+enum Sort {
+  asc
+  desc
 }
 
 type User {
