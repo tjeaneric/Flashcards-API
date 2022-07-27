@@ -1,6 +1,7 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
 import bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
+import { correctPassword } from "../utils/auth";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -66,12 +67,7 @@ export const AuthMutation = extendType({
         }
         // 2)Check if user exist and password is correct
         const user = await context.prisma.user.findUnique({ where: { email } });
-        const correctPassword = async function (
-          candidatePassword: string,
-          userPassword: string
-        ) {
-          return await bcrypt.compare(candidatePassword, userPassword);
-        };
+
         if (!user || (await correctPassword(user.password, password))) {
           throw new Error("Incorrect email or password");
         }

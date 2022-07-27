@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,3 +18,11 @@ export function decodeAuthHeader(authHeader: String): AuthTokenPayload {
   }
   return jwt.verify(token, secret) as AuthTokenPayload;
 }
+
+//Password compare function
+export const correctPassword = async (
+  candidatePassword: string,
+  userPassword: string
+) => {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};

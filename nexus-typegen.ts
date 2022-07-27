@@ -29,9 +29,15 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CardOrderByInput: { // input type
+    createdAt?: NexusGenEnums['Sort'] | null; // Sort
+    description?: NexusGenEnums['Sort'] | null; // Sort
+    name?: NexusGenEnums['Sort'] | null; // Sort
+  }
 }
 
 export interface NexusGenEnums {
+  Sort: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -55,6 +61,11 @@ export interface NexusGenObjects {
     id: string; // String!
     name: string; // String!
   }
+  Feed: { // root type
+    cards: NexusGenRootTypes['Card'][]; // [Card!]!
+    count: number; // Int!
+    id?: string | null; // ID
+  }
   Mutation: {};
   Query: {};
   User: { // root type
@@ -73,7 +84,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
@@ -88,6 +99,11 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     name: string; // String!
   }
+  Feed: { // field return type
+    cards: NexusGenRootTypes['Card'][]; // [Card!]!
+    count: number; // Int!
+    id: string | null; // ID
+  }
   Mutation: { // field return type
     deleteCard: NexusGenRootTypes['Card'] | null; // Card
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
@@ -97,7 +113,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     card: NexusGenRootTypes['Card'] | null; // Card
-    cards: NexusGenRootTypes['Card'][]; // [Card!]!
+    cards: NexusGenRootTypes['Feed']; // Feed!
   }
   User: { // field return type
     cards: NexusGenRootTypes['Card'][]; // [Card!]!
@@ -121,6 +137,11 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     name: 'String'
   }
+  Feed: { // field return type name
+    cards: 'Card'
+    count: 'Int'
+    id: 'ID'
+  }
   Mutation: { // field return type name
     deleteCard: 'Card'
     login: 'AuthPayload'
@@ -130,7 +151,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     card: 'Card'
-    cards: 'Card'
+    cards: 'Feed'
   }
   User: { // field return type name
     cards: 'Card'
@@ -171,6 +192,12 @@ export interface NexusGenArgTypes {
     card: { // args
       id: string; // String!
     }
+    cards: { // args
+      filter?: string | null; // String
+      orderBy?: NexusGenInputs['CardOrderByInput'][] | null; // [CardOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
   }
 }
 
@@ -182,9 +209,9 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
