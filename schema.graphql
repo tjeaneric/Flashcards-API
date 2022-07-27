@@ -2,20 +2,42 @@
 ### Do not make changes to this file directly
 
 
-type Mutation {
-  deleteTeam(id: String!): Team
-  postTeam(description: String!, name: String!): Team!
-  updateTeam(description: String, done: Boolean, id: String!, name: String): Team
+type AuthPayload {
+  token: String!
+  user: User!
 }
 
-type Query {
-  team(id: String!): Team
-  teams: [Team!]!
-}
-
-type Team {
+type Card {
+  createdAt: DateTime!
+  createdBy: User
   description: String!
   done: Boolean!
   id: String!
   name: String!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type Mutation {
+  deleteCard(id: String!): Card
+  login(email: String!, password: String!): AuthPayload!
+  postCard(description: String!, name: String!): Card!
+  signup(email: String!, firstName: String!, lastName: String!, password: String!): AuthPayload!
+  updateCard(description: String, done: Boolean, id: String!, name: String): Card
+}
+
+type Query {
+  card(id: String!): Card
+  cards: [Card!]!
+}
+
+type User {
+  cards: [Card!]!
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String!
 }

@@ -10,10 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Team{
+model Card{
   id String @id @default(cuid())
-  name String 
+  name String @unique 
   description String
   done Boolean @default(false)
   createdAt DateTime @default(now())
+  createdBy User? @relation(fields: [createdById], references: [id])
+  createdById String?
+}
+
+model User{
+   id String @id @default(cuid())
+   firstName String
+   lastName String
+   email String @unique
+   password String
+   cards Card[]
 }
