@@ -68,7 +68,7 @@ export const AuthMutation = extendType({
         // 2)Check if user exist and password is correct
         const user = await context.prisma.user.findUnique({ where: { email } });
 
-        if (!user || !(await correctPassword(user.password, password))) {
+        if (!user || !(await correctPassword(password, user.password))) {
           throw new Error("Incorrect email or password");
         }
 
